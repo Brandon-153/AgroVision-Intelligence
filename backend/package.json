@@ -1,0 +1,47 @@
+{
+  "name": "agrovision",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc && node scripts/fixPrismaRuntimeImports.cjs",
+    "start": "node dist/server.js",
+    "mi:test": "ts-node src/modules/analysis/data/x.ts",
+    "telemetry:test": "tsx --test tests/telemetry.test.cjs",
+    "sensors:test": "tsx --test tests/sensors.test.cjs",
+    "crops:test": "tsx --test tests/crops.test.cjs",
+    "vision:test": "npm run build && node --test tests/vision.test.cjs",
+    "field-report:test": "tsx src/modules/reports/services/fieldReportService.test.ts",
+    "smoke:test": "tsx src/modules/pruebass/pruebamock.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "^7.10.0",
+    "agrovision-monorepo": "file:..",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.4.0",
+    "socket.io": "^4.8.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.3.0",
+    "@types/node": "^25.9.1",
+    "prisma": "^7.10.0",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3"
+  }
+}
