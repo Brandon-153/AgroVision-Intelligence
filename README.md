@@ -1,1 +1,833 @@
 
+<p align="center">
+  <img src="frontend/src/assets/logos/imagotipo-V-clara.svg" alt="AgroVision Intelligence Logo" width="180" />
+</p>
+
+<h1 align="center">AgroVision Intelligence</h1>
+
+<h3 align="center">
+  Plataforma prescriptiva de inteligencia agrícola multifuente con análisis visual para cultivos estratégicos de Nicaragua.
+</h3>
+
+<p align="center">
+  <strong>IA visual y evidencia multifuente para apoyar decisiones agrícolas</strong><br>
+  <em>Imagen + clima + sensores + historial + mapping + capa satelital simulada → evidencia → riesgo → recomendación accionable.</em>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Brandon-153/AgroVision-Intelligence">
+    <img src="https://img.shields.io/badge/Enfoque-IA%20aplicada-0B7A3B?style=for-the-badge" alt="IA aplicada a la agricultura" />
+  </a>
+  <img src="https://img.shields.io/badge/Sector-Agricultura-2E8B57?style=for-the-badge" alt="Sector agrícola" />
+  <img src="https://img.shields.io/badge/Estado-MVP%20en%20desarrollo-F2A900?style=for-the-badge" alt="Estado MVP" />
+  <img src="https://img.shields.io/badge/License-MIT-111827?style=for-the-badge" alt="MIT License" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-20%2B-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js 20+" />
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=111827" alt="React 19" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript " />
+  <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.11+" />
+  <img src="https://img.shields.io/badge/OpenCV-IA%20Visual-5C3EE8?style=flat-square&logo=opencv&logoColor=white" alt="OpenCV" />
+  <img src="https://img.shields.io/badge/PostgreSQL%20%2B%20Prisma-Ready-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL Prisma" />
+</p>
+
+<p align="center">
+  <strong>Responsable de esta presentación:</strong> Brandon Rodriguez · <strong>IA aplicada a la agricultura</strong> · <strong>MVP en desarrollo</strong>
+</p>
+
+---
+
+
+**Tabla de Contenidos**
+- [Descripción del Proyecto](#descripción-del-proyecto)
+- [Problema y Propuesta de Valor](#problema-y-propuesta-de-valor)
+  - [Contexto del problema](#contexto-del-problema)
+  - [Propuesta de valor](#propuesta-de-valor)
+  - [Principio ético](#principio-ético)
+- [Diagrama de Arquitectura](#diagrama-de-arquitectura)
+- [Flujo Prescriptivo del Sistema](#flujo-prescriptivo-del-sistema)
+- [Stack Tecnológico](#stack-tecnológico)
+- [Sistema de Inteligencia Artificial](#sistema-de-inteligencia-artificial)
+  - [Rol de la IA en el producto](#rol-de-la-ia-en-el-producto)
+  - [Clasificaciones del contrato visual](#clasificaciones-del-contrato-visual)
+  - [Métricas visuales esperadas](#métricas-visuales-esperadas)
+  - [Respuestas estructuradas y explicabilidad](#respuestas-estructuradas-y-explicabilidad)
+  - [Ejemplo de salida del servicio visual](#ejemplo-de-salida-del-servicio-visual)
+  - [Uso responsable](#uso-responsable)
+- [Guía de Instalación](#guía-de-instalación)
+  - [Requisitos previos](#requisitos-previos)
+  - [Variables de entorno](#variables-de-entorno)
+    - [`.env.example` en raíz](#envexample-en-raíz)
+    - [`backend/.env.example`](#backendenvexample)
+    - [`frontend/.env.example`](#frontendenvexample)
+    - [`ai-service/.env.example`](#ai-serviceenvexample)
+  - [Instalación local](#instalación-local)
+    - [1. Clonar el repositorio](#1-clonar-el-repositorio)
+    - [2. Instalar dependencias del backend](#2-instalar-dependencias-del-backend)
+    - [3. Instalar dependencias del frontend](#3-instalar-dependencias-del-frontend)
+    - [4. Crear entorno virtual para AI Service](#4-crear-entorno-virtual-para-ai-service)
+  - [Prisma y base de datos](#prisma-y-base-de-datos)
+  - [Levantar servicios](#levantar-servicios)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
+    - [AI Service](#ai-service)
+  - [Comandos rápidos del monorepo](#comandos-rápidos-del-monorepo)
+- [Despliegue en Azure](#despliegue-en-azure)
+    - [Arquitectura del despliegue](#arquitectura-del-despliegue)
+    - [Acceso público](#acceso-público)
+    - [Configuración de red](#configuración-de-red)
+- [Endpoints Principales](#endpoints-principales)
+- [Arquitectura de Carpetas](#arquitectura-de-carpetas)
+- [Contrato de Respuesta API](#contrato-de-respuesta-api)
+  - [Contratos centrales](#contratos-centrales)
+- [Funcionalidades del MVP](#funcionalidades-del-mvp)
+- [Escalabilidad y Sostenibilidad Técnica](#escalabilidad-y-sostenibilidad-técnica)
+- [Alcance y Límites del MVP](#alcance-y-límites-del-mvp)
+- [Validación antes de Pull Request](#validación-antes-de-pull-request)
+  - [Evidencias de funcionamiento](#evidencias-de-funcionamiento)
+- [Responsable actual](#responsable-actual)
+- [Contacto](#contacto)
+<!-- - [Cómo Probar el MVP](#cómo-probar-el-mvp-en-2-minutos) -->
+
+
+---
+
+## Descripción del Proyecto
+
+| Campo | Descripción |
+|---|---|
+| **Proyecto** | AgroVision Intelligence |
+| **Sector** | Agricultura |
+| **Responsable actual** | Brandon Rodriguez |
+| **Repositorio** | `Brandon-153/AgroVision-Intelligence` |
+| **Estado actual** | MVP en desarrollo |
+| **Modo de demo actual** | Localhost |
+<!-- | **URL demo** | `[INSERTAR URL DEMO]` |
+| **Video demo** | `[INSERTAR VIDEO DEMO]` | -->
+
+> AgroVision Intelligence combina análisis visual preliminar y datos agrícolas para organizar evidencia técnica, estimar riesgo por zona y orientar recomendaciones para pequeños y medianos productores.
+
+---
+
+## Problema y Propuesta de Valor
+
+### Contexto del problema
+
+En el sector agropecuario nacional, muchos productores toman decisiones críticas con información fragmentada, observación manual y baja trazabilidad. El problema no es únicamente medir datos como temperatura o humedad; el problema real es que esos datos rara vez se convierten en decisiones operativas claras.
+
+| Dolor identificado | Impacto operativo | Respuesta de AgroVision Intelligence |
+|---|---|---|
+| Detección tardía de estrés vegetal | Pérdida de vigor, bajo rendimiento y reacción fuera de tiempo | Análisis visual preliminar + índices de vegetación simulados + riesgo por zona |
+| Datos agrícolas dispersos | Sensores, imágenes, clima e historial no conectan entre sí | Fusión multifuente mediante `EvidenceItem[]` |
+| Falta de priorización | El productor no sabe qué zona atender primero | `ZoneInsight` con riesgo, causa principal y acción recomendada |
+| Reportes débiles o inexistentes | No queda evidencia de inspecciones, alertas o acciones | Reportes e historial conectados a alertas y recomendaciones |
+<!-- | Software agrícola genérico | No considera cultivos estratégicos nacionales | Perfiles de frijol rojo, yuca, quequisque, naranjo, sorgo, maní y cultivo general | -->
+
+### Propuesta de valor
+
+**AgroVision Intelligence** es una plataforma web prescriptiva que integra:
+
+| Fuente | Función dentro del sistema |
+|---|---|
+| **Imagen del cultivo** | Detectar señales visuales preliminares de estrés, zonas secas, clorosis o manchas foliares |
+| **Clima** | Estimar condiciones que elevan riesgo hídrico, térmico o fúngico |
+| **Sensores y telemetría** | Incorporar lecturas de campo como humedad, temperatura, pH o variables futuras |
+| **Historial agrícola** | Dar contexto a eventos pasados, reportes y evolución por zonas estratégicas |
+| **Mapping 2D** | Visualizar trayectorias, cobertura del terreno y puntos críticos dentro del campo|
+| **Capa satelital simulada** | Representar vigor vegetal, NDVI/NDWI/GNDVI simulados y anomalías por zona |
+
+El sistema transforma esa información en:
+
+```text
+EvidenceItem[] → RiskAssessment → ZoneInsight → Alert → Recommendation → Report
+```
+
+### Principio ético
+
+AgroVision no reemplaza al productor ni al técnico agrícola. Su función es apoyar la toma de decisiones con información organizada, visual, explicable y accionable.
+
+> La IA visual se presenta como detección preliminar de señales compatibles con estrés o deterioro del cultivo. No se presenta como diagnóstico fitosanitario definitivo (al menos no en esta etapa del proyecto).
+
+---
+
+## Diagrama de Arquitectura
+
+```mermaid
+flowchart TD
+    USER["Usuario<br/>Productor ·  Ing. Agrónomo de Campo · Analista Agrícola"] --> UI["Frontend React + Vite<br/>Dashboard · Mapping · Vision AI · Crops · Alerts · Recommendations"]
+
+    UI --> API["Backend API<br/>Express + TypeScript"]
+
+    API --> APP["App Router API<br/>/api/*"]
+
+    APP --> DASH["Dashboard Module"]
+    APP --> CROPS["Crops Module"]
+    APP --> MAP["Mapping Module"]
+    APP --> VEG["Vegetation Module"]
+    APP --> VISION["Vision Module"]
+    APP --> ANALYSIS["Analysis Module"]
+    APP --> RISK["Risk Module"]
+    APP --> ALERTS["Alerts Module"]
+    APP --> RECS["Recommendations Module"]
+    APP --> REPORTS["Reports Module"]
+    APP --> WEATHER["Weather Module"]
+
+    CROPS --> CROP_PROFILES["CropProfile Rules<br/>Cultivos nacionales"]
+    MAP --> MAP_ENGINE["Mapping Engine<br/>Trayectoria · Eventos · Detecciones"]
+    VEG --> VEG_INDEX["Vegetation Indices<br/>NDVI · NDWI · GNDVI simulados"]
+    WEATHER --> WEATHER_DATA["Weather Mock / Future API"]
+    VISION --> AI_PROXY["Backend Vision Service"]
+    AI_PROXY --> AI_SERVICE["AI Service<br/>FastAPI + OpenCV"]
+    AI_SERVICE --> VISUAL_METRICS["VisualMetrics<br/>Predicción · Confianza · Explicación"]
+
+    CROP_PROFILES --> CORE["Analysis Core"]
+    MAP_ENGINE --> CORE
+    VEG_INDEX --> CORE
+    WEATHER_DATA --> CORE
+    VISUAL_METRICS --> CORE
+    TELEMETRY["Sensors / Telemetry Mock"] --> CORE
+    HISTORY["History / Reports"] --> CORE
+
+    CORE --> EVIDENCE["EvidenceItem[]<br/>Fuente · Métrica · Estado · Explicación"]
+    EVIDENCE --> RISK
+    RISK --> ZONE["ZoneInsight<br/>Riesgo final · Score · Causa · Acción"]
+    ZONE --> ALERTS
+    ZONE --> RECS
+    ZONE --> DASH
+    ZONE --> REPORTS
+
+    API --> DB["PostgreSQL + Prisma<br/>Persistencia futura / modelos reales"]
+    API --> MOCKS["Mocks de simulación<br/>MVP reproducible"]
+```
+
+---
+
+## Flujo Prescriptivo del Sistema
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant F as Frontend
+    participant B as Backend API
+    participant AI as AI Service
+    participant R as Risk Engine
+    participant D as Dashboard
+
+    U->>F: Sube imagen / consulta dashboard
+    F->>B: Solicita análisis o datos prescriptivos
+    B->>AI: Envía imagen y CropType
+    AI-->>B: VisionPrediction + VisualMetrics + confidence
+    B->>B: Normaliza como VisionInspection
+    B->>B: Fusiona visión + clima + vegetación + mapping + historial
+    B->>R: Envía EvidenceItem[]
+    R-->>B: RiskAssessment
+    B-->>F: ZoneInsight + Alert + Recommendation
+    F-->>D: Renderiza riesgo, evidencia y acción sugerida
+```
+
+---
+
+## Stack Tecnológico
+
+| Componente | Tecnología | Justificación Técnica de Eficiencia |
+|---|---|---|
+| **Frontend** | React + Vite | Permite construir una interfaz modular, rápida y mantenible. Vite acelera el ciclo de desarrollo y reduce fricción en demo. |
+| **Lenguaje Frontend** | TypeScript | Reduce incompatibilidades con contratos de datos y evita errores silenciosos entre servicios, adapters y componentes. |
+| **Render técnico** | SVG + CSS modular | Ideal para implementar mapping 2D básico, capas visuales, overlays de riesgo, trayectorias, plantas, obstáculos y puntos críticos. |
+| **Backend API** | Node.js + Express + TypeScript | Coordina los módulos, valida las solicitudes y conecta la interfaz con el servicio de análisis visual y el motor de riesgo. |
+| **Validación de datos** | Zod | Permite validar contratos, requests y respuestas críticas antes de llegar al frontend. |
+| **ORM / Datos** | Prisma + PostgreSQL | Base preparada para persistencia real, relaciones entre cultivos, reportes, alertas, usuarios y zonas agrícolas. |
+| **Mocks controlados** | JSON / TypeScript mock services | Permiten simular escenarios agrícolas de forma reproducible mientras se integran sensores o datos reales. |
+| **IA visual** | Python + OpenCV | Permite análisis preliminar de imágenes mediante métricas visuales interpretables que aportan evidencia al motor de riesgo. |
+| **AI Service** | FastAPI | Expone análisis visual como microservicio independiente, desacoplado del backend principal. |
+| **Contratos** | TypeScript interfaces | Crean una fuente de verdad entre backend, frontend e IA para evitar rupturas de integración. |
+| **Control de versiones** | Git + GitHub + Pull Requests | Permite trazabilidad, revisión por ramas, control de conflictos y colaboración por módulo. |
+| **Diseño de producto** | CSS tokens + componentes reutilizables | Mantiene consistencia visual, escalabilidad de interfaz y velocidad de construcción. |
+
+---
+
+## Sistema de Inteligencia Artificial
+
+### Rol de la IA en el producto
+
+La inteligencia de AgroVision se organiza en cuatro capas: análisis visual, integración de evidencia, evaluación de riesgo y recomendaciones. El servicio visual aporta métricas preliminares; el backend incorpora el contexto agrícola y aplica las reglas de decisión documentadas. Estas funciones no implican un agente autónomo ni un diagnóstico fitosanitario definitivo.
+
+| Capa | Responsabilidad |
+|---|---|
+| **AI Service** | Procesar imagen, extraer métricas visuales y generar predicción preliminar |
+| **Backend Intelligence Layer** | Fusionar la evidencia visual con clima, vegetación simulada, mapping, historial y reglas de cultivo |
+| **Risk Engine** | Calcular riesgo final, causa principal y acción recomendada |
+| **Recommendation Layer** | Convertir riesgo y evidencia en recomendación accionable |
+
+### Clasificaciones del contrato visual
+
+```text
+HEALTHY
+WATER_STRESS
+CHLOROSIS
+DRY_AREA
+LEAF_SPOT
+UNKNOWN
+```
+
+### Métricas visuales esperadas
+
+| Métrica | Uso |
+|---|---|
+| `greenCoveragePercentage` | Estimar cobertura verde visible |
+| `dryAreaPercentage` | Identificar zonas secas o deterioradas |
+| `chlorosisSuspected` | Señal visual preliminar de amarillamiento |
+| `leafSpotSuspected` | Señal visual preliminar de manchas foliares |
+| `stressPatternDetected` | Indica patrón visual compatible con estrés |
+| `confidence` | Nivel de confianza del análisis visual |
+| `explanation` | Explicación corta y entendible del resultado |
+
+### Respuestas estructuradas y explicabilidad
+
+AgroVision no depende de un LLM para funcionar. La IA visual y el motor de reglas tienen responsabilidades separadas. Los siguientes patrones describen cómo se organiza y comunica la evidencia; no representan una integración con un modelo generativo ni demuestran por sí solos el uso de prompts en ejecución:
+
+| Patrón | Aplicación en AgroVision |
+|---|---|
+| **Context grounding** | Toda recomendación se basa en `EvidenceItem[]`, no en texto genérico. |
+| **Structured output** | Los servicios devuelven objetos tipados como `VisionInspection`, `ZoneInsight`, `Alert` y `Recommendation`. |
+| **Action-first response** | La recomendación prioriza acción sugerida, urgencia e impacto esperado. |
+| **Safety framing** | La IA visual se expresa como detección preliminar, evitando diagnósticos definitivos. |
+| **Traceability** | Cada alerta conserva fuente, métrica, estado y explicación. |
+
+### Ejemplo de salida del servicio visual
+
+```json
+{
+  "prediction": "WATER_STRESS",
+  "confidence": 0.87,
+  "visualMetrics": {
+    "greenCoveragePercentage": 62,
+    "dryAreaPercentage": 21,
+    "chlorosisSuspected": false,
+    "leafSpotSuspected": false,
+    "stressPatternDetected": true
+  },
+  "explanation": "Se detecta reducción de cobertura verde y presencia moderada de zonas secas."
+}
+```
+
+### Uso responsable
+
+| Regla | Decisión técnica |
+|---|---|
+| No diagnóstico definitivo | La IA solo detecta señales visuales compatibles con estrés o deterioro |
+| Backend decide riesgo final | El AI Service no genera alertas directamente |
+| Evidencia obligatoria | Sin `EvidenceItem[]`, no se genera alerta ni recomendación válida |
+| Recursos eficientes | El MVP prioriza OpenCV explicable y reglas ligeras antes de modelos pesados |
+
+---
+
+## Guía de Instalación 
+
+### Requisitos previos
+
+| Herramienta | Versión recomendada | Uso |
+|---|---:|---|
+| Node.js | `20.x` o superior | Backend y frontend |
+| npm | `10.x` o superior | Gestión de dependencias |
+| Python | `3.11.x` o superior | AI Service |
+| Git | `2.40+` | Control de versiones |
+| PostgreSQL | `15+` | Base de datos con Prisma |
+| VS Code | Última estable | Desarrollo |
+| GitKraken `(opcional)`/ GitHub Desktop | Opcional | Gestión visual de ramas |
+
+---
+
+### Variables de entorno
+
+Crear los siguientes archivos según el módulo que se va a ejecutar.
+
+#### `.env.example` en raíz
+
+```env
+# URL base del backend para referencia general
+VITE_API_BASE_URL=http://localhost:3000/api
+
+# URL local del servicio IA
+AI_SERVICE_URL=http://localhost:8000
+
+# Entorno de ejecución
+NODE_ENV=development
+```
+
+#### `backend/.env.example`
+
+```env
+# Puerto del backend Express
+PORT=3000
+
+# Base de datos PostgreSQL usada por Prisma
+# Reemplazar user, password, host, port y database por valores locales
+DATABASE_URL="postgresql://user:password@localhost:5432/agrovision"
+
+# URL interna del AI Service
+AI_SERVICE_URL=http://localhost:8000
+
+# Entorno del backend
+NODE_ENV=development
+
+# Secreto para JWT si se habilita autenticación
+JWT_SECRET="replace-with-secure-secret"
+```
+
+#### `frontend/.env.example`
+
+```env
+# API base consumida por Vite
+VITE_API_BASE_URL=http://localhost:3000/api
+```
+
+#### `ai-service/.env.example`
+
+```env
+# Puerto del servicio IA
+AI_SERVICE_PORT=8000
+
+# Entorno del servicio IA
+AI_ENV=development
+
+# Ruta local opcional para modelos
+MODEL_PATH=./models
+```
+
+---
+
+### Instalación local
+
+#### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/Brandon-153/AgroVision-Intelligence.git
+cd AgroVision-Intelligence
+```
+
+#### 2. Instalar dependencias del backend
+
+```bash
+npm --prefix backend install
+```
+
+#### 3. Instalar dependencias del frontend
+
+```bash
+npm --prefix frontend install
+```
+
+#### 4. Crear entorno virtual para AI Service
+
+```bash
+cd ai-service
+python -m venv .venv
+```
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+Linux / macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+Instalar dependencias:
+
+```bash
+pip install -r requirements.txt
+cd ..
+```
+
+> Si `requirements.txt` aún no existe, crear primero el archivo dentro de `ai-service/`.
+
+---
+
+### Prisma y base de datos
+
+Desde la raíz:
+
+```bash
+cd backend
+npx prisma generate
+npx prisma migrate dev
+cd ..
+```
+
+> Si se ejecuta únicamente con mocks para demo local, las migraciones pueden omitirse temporalmente.
+
+---
+
+### Levantar servicios
+
+#### Backend
+
+```bash
+npm run dev:backend
+```
+
+Backend esperado:
+
+```text
+http://localhost:3000
+```
+
+#### Frontend
+
+En otra terminal:
+
+```bash
+npm run dev:frontend
+```
+
+Frontend esperado:
+
+```text
+http://localhost:5173
+```
+
+#### AI Service
+
+En otra terminal:
+
+```bash
+cd ai-service
+```
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+Linux / macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+Ejecutar:
+
+```bash
+uvicorn main:app --reload --port 8000
+```
+
+AI Service esperado:
+
+```text
+http://localhost:8000
+```
+
+---
+
+### Comandos rápidos del monorepo
+
+| Comando | Uso |
+|---|---|
+| `npm run dev:backend` | Ejecuta backend Express en desarrollo |
+| `npm run build:backend` | Compila backend TypeScript |
+| `npm run start:backend` | Ejecuta backend compilado |
+| `npm run dev:frontend` | Ejecuta frontend Vite |
+| `npm run build:frontend` | Compila frontend para producción |
+
+---
+
+## Despliegue en Azure
+
+AgroVision se encuentra desplegado en una máquina virtual de Microsoft Azure, desde la cual se publica la aplicación para permitir el acceso remoto desde navegadores y dispositivos con conexión a Internet.
+
+La infraestructura utiliza una IP pública y Nginx como servidor web para atender las solicitudes HTTP.
+
+#### Arquitectura del despliegue
+
+El acceso a la plataforma sigue este flujo general:
+
+* El usuario accede a la aplicación desde un navegador web.
+* La solicitud llega a la IP pública de la máquina virtual de Azure mediante el puerto 8080.
+* El Network Security Group (NSG) de Azure permite el tráfico entrante TCP por dicho puerto.
+* El firewall interno del servidor permite el tráfico correspondiente.
+* Nginx escucha las solicitudes en el puerto 8080, tanto en IPv4 como en IPv6, y las gestiona según la configuración activa del proyecto.
+
+#### Acceso público
+
+La aplicación está disponible en la siguiente dirección:
+
+URL: `http://158.23.56.161:8080`
+
+El puerto 8080 debe especificarse en la URL porque es el puerto configurado para el acceso HTTP público.
+
+#### Configuración de red
+
+Para habilitar el acceso externo, se realizaron los siguientes ajustes:
+
+* **Azure NSG:** se agregó una regla de entrada para permitir tráfico TCP por el puerto 8080.
+
+* **Nginx:** se modificó la configuración activa del sitio agrovision para escuchar en el puerto 8080 en IPv4 e IPv6.
+
+* **Firewall del servidor:** se habilitó el tráfico entrante por el puerto 8080 mediante UFW.
+
+Estos ajustes permiten que las solicitudes externas alcancen el servidor web a través del puerto configurado.
+
+Actualización y sincronización del despliegue
+
+El código fuente de la aplicación desplegada debe mantenerse sincronizado con la rama principal del repositorio de GitHub.
+
+---
+
+## Endpoints Principales
+
+| Módulo | Método | Endpoint | Propósito |
+|---|---|---|---|
+| Mapping | GET | `/api/mapping/simulation` | Datos completos de simulación 2D |
+| Mapping | GET | `/api/mapping/playback` | Frames de reproducción |
+| Mapping | GET | `/api/mapping/summary` | Resumen final de inspección |
+| Crops | GET | `/api/crops/profiles` | Perfiles de cultivos estratégicos |
+| Vegetation | GET | `/api/vegetation/indices?fieldId=field-001` | NDVI/NDWI/GNDVI simulados |
+| Analysis | GET | `/api/analysis/zone/:zoneId` | Análisis prescriptivo por zona |
+| Risk | GET | `/api/risk/field/:fieldId` | Evaluación de riesgo por campo |
+| Alerts | GET | `/api/alerts` | Alertas con evidencia |
+| Recommendations | GET | `/api/recommendations` | Recomendaciones accionables |
+| Vision | POST | `/api/vision/analyze` | Análisis visual desde backend |
+| Weather | GET | `/api/weather/current?fieldId=field-001` | Clima simulado o integrable |
+| AI Service | POST | `/vision/analyze` | Análisis visual por OpenCV |
+
+---
+
+## Arquitectura de Carpetas
+
+```text
+AgroVision-Intelligence/
+│
+├── README.md
+├── package.json
+├── .gitignore
+├── .env.example
+│
+├── backend/
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── prisma.config.ts
+│   ├── prisma/
+│   │   └── schema.prisma
+│   │
+│   └── src/
+│       ├── app.ts
+│       ├── server.ts
+│       │
+│       ├── shared/
+│       │   ├── responses/
+│       │   │   └── apiResponse.ts
+│       │   ├── contracts/
+│       │   ├── middlewares/
+│       │   ├── config/
+│       │   ├── types/
+│       │   └── utils/
+│       │
+│       ├── data/
+│       │   └── mocks/
+│       │
+│       └── modules/
+│           ├── mapping/
+│           ├── dashboard/
+│           ├── crops/
+│           ├── vegetation/
+│           ├── analysis/
+│           ├── risk/
+│           ├── alerts/
+│           ├── recommendations/
+│           ├── vision/
+│           ├── weather/
+│           ├── reports/
+│           ├── farms/
+│           ├── fields/
+│           ├── sensors/
+│           ├── telemetry/
+│           ├── missions/
+│           ├── field-notebook/
+│           └── sync/
+│
+├── frontend/
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tsconfig.json
+│   │
+│   └── src/
+│       ├── main.tsx
+│       ├── app/
+│       ├── shared/
+│       │   ├── api/
+│       │   ├── components/
+│       │   ├── styles/
+│       │   ├── types/
+│       │   └── utils/
+│       │
+│       └── features/
+│           ├── dashboard/
+│           ├── mapping/
+│           ├── crops/
+│           ├── vision-ai/
+│           ├── alerts/
+│           ├── recommendations/
+│           ├── reports/
+│           ├── field-notebook/
+│           ├── missions/
+│           └── sync-status/
+│
+├── ai-service/
+│   ├── main.py
+│   ├── requirements.txt
+│   └── app/
+│       ├── schemas.py
+│       ├── vision_analyzer.py
+│       ├── model_loader.py
+│       ├── training/
+│       └── utils/
+│
+├── contracts/
+│   ├── AGROVISION_DATA_CONTRACT.md
+│   └── AGROVISION_INTELLIGENCE_EXTENSION.md
+│
+└── docs/
+```
+
+---
+
+## Contrato de Respuesta API
+
+Todos los endpoints deben responder con la misma estructura base:
+
+```ts
+interface ApiResponse<T> {
+  success: boolean;
+  data: T | null;
+  message?: string;
+  error?: string;
+  timestamp: string;
+}
+```
+
+### Contratos centrales
+
+| Contrato | Propósito |
+|---|---|
+| `CropType` | Identifica cultivos estratégicos nacionales |
+| `CropProfile` | Define riesgos, métricas y recomendaciones por cultivo |
+| `EvidenceItem` | Estandariza la evidencia usada por riesgo, alerta y recomendación |
+| `VegetationIndexSnapshot` | Representa NDVI/NDWI/GNDVI simulados e interpretación |
+| `VisionInspection` | Normaliza el resultado del análisis visual |
+| `RiskAssessment` | Resultado del motor de riesgo |
+| `ZoneInsight` | Diagnóstico prescriptivo por zona |
+| `Alert` | Alerta con severidad, evidencia y acción |
+| `Recommendation` | Acción sugerida con razón e impacto esperado |
+| `DashboardIntelligence` | Resumen ejecutivo para dashboard |
+
+---
+
+## Funcionalidades del MVP
+
+| Módulo | Funcionalidad |
+|---|---|
+| Dashboard | Riesgo dominante, zona afectada, recomendación principal y alertas críticas |
+| Crops | Perfiles de cultivos estratégicos nacionales |
+| Mapping | Simulación 2D del rover, trayectoria, detecciones y resumen |
+| Vision AI | Carga de imagen, selección de cultivo, predicción visual y métricas |
+| Vegetation | Índices simulados de vigor vegetal por zona |
+| Analysis | Fusión multifuente para generar `ZoneInsight` |
+| Risk | Motor de riesgo explicable basado en evidencia |
+| Alerts | Alertas con fuente, métrica, severidad y acción recomendada |
+| Recommendations | Acciones sugeridas con impacto esperado |
+| Reports | Trazabilidad de inspecciones, alertas y decisiones |
+
+---
+
+## Escalabilidad y Sostenibilidad Técnica
+
+| Fase | Evolución | Resultado esperado |
+|---|---|---|
+| 1 | Sustituir mocks por datos reales | Sensores, clima, reportes e imágenes persistentes |
+| 2 | Validar reglas con técnicos agrícolas | Risk engine ajustado por cultivo y región |
+| 3 | Integrar fuentes abiertas | Sentinel/Landsat o API climática cuando el MVP esté validado |
+| 4 | Desplegar en nube | Backend, frontend, base de datos y AI Service accesibles públicamente |
+| 5 | Escalar a multi-finca | Roles, historial, reportes, alertas y recomendaciones por productor |
+
+---
+
+## Alcance y Límites del MVP
+
+| Punto | Declaración |
+|---|---|
+| Diagnóstico fitosanitario | No se promete un diagnóstico definitivo durante esta fase de proyecto |
+| Satélite real | No se integra Sentinel ni Google Earth Engine en esta versión |
+| IA | Se usa como análisis preliminar explicable |
+| Mapping | Es simulación técnica visual, no SLAM real todavía |
+| Hardware | El MVP no depende de rover de reconocimiento físico o  sensores especializados todavía para demostrar valor |
+| Decisión final | La recomendación apoya y mejora decisiones críticas, no sustituye al productor o técnico especialista del campo |
+
+---
+
+## Validación antes de Pull Request
+
+### Evidencias de funcionamiento
+
+El estado verificable de la demo se mantiene en:
+
+- [Checklist de evidencias](docs/evidence/EVIDENCE_CHECKLIST_PRECLASIFICACION.md): responsables, estados, ubicaciones y bloqueos.
+- [Recorrido de demostración](docs/backend/ideathon-demo-evidence-map.md): flujo documentado de la demo.
+- [`docs/backend/SMOKE_TEST_RESULTS.md`](docs/backend/SMOKE_TEST_RESULTS.md): endpoints comprobados y condiciones de ejecución.
+- [`docs/reports/REPORTS_STRUCTURE.md`](docs/reports/REPORTS_STRUCTURE.md): contrato real del reporte prescriptivo.
+
+El Notebook se demuestra mediante su endpoint y JSON, ya que no tiene una pantalla dedicada. La visión se presenta como análisis preliminar simulado, no como un modelo agrícola entrenado al menos no en esta fase del proyecto aún.
+
+```bash
+git status --short
+npm run build:backend
+npm run build:frontend
+```
+
+Flujo recomendado:
+
+```bash
+git checkout master
+git pull origin master
+git checkout -b feat/nombre-del-cambio
+```
+
+Después de trabajar:
+
+```bash
+git add ruta-del-cambio
+git commit -m "feat(modulo): descripcion clara"
+git push -u origin feat/nombre-del-cambio
+```
+
+---
+
+## Responsable actual
+
+| Responsable | Rol actual | Responsabilidades clave | GitHub |
+|---|---|---|---|
+| **Brandon Rodriguez** | Responsable de la presentación y coordinación actual | Presentación del producto, coordinación, diseño visual e integración técnica | [@Brando-1510](https://github.com/Brando-1510) |
+
+La base de código es un proyecto colaborativo preexistente disponible en [luis-hdz7/AgroVision](https://github.com/luis-hdz7/AgroVision). Su historial conserva las contribuciones originales. La representación individual actual no implica autoría exclusiva ni que todo el desarrollo corresponda al evento actual.
+
+---
+
+## Contacto
+
+| Responsable | Contacto |
+|---|---|
+| Brandon Rodriguez | `brandonbrt2020@gmail.com` |
+
+---
+
+<h3 align="center">AgroVision Intelligence</h3>
+
+<p align="center">
+  <strong>AgroVision Intelligence combina análisis visual preliminar y evidencia multifuente para apoyar decisiones agrícolas explicables, con seguimiento por parcela.</strong>
+</p>
