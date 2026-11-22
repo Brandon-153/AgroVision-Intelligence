@@ -87,6 +87,7 @@
 - [Validación antes de Pull Request](#validación-antes-de-pull-request)
   - [Evidencias de funcionamiento](#evidencias-de-funcionamiento)
 - [Responsable actual](#responsable-actual)
+- [| **Brandon Rodriguez** | Responsable de la presentación y coordinación actual | Presentación del producto, coordinación, diseño visual e integración técnica | @Brando-1510 |](#-brandon-rodriguez--responsable-de-la-presentación-y-coordinación-actual--presentación-del-producto-coordinación-diseño-visual-e-integración-técnica--brando-1510-)
 - [Contacto](#contacto)
 <!-- - [Cómo Probar el MVP](#cómo-probar-el-mvp-en-2-minutos) -->
 
@@ -813,9 +814,6 @@ git push -u origin feat/nombre-del-cambio
 | Responsable | Rol actual | Responsabilidades clave | GitHub |
 |---|---|---|---|
 | **Brandon Rodriguez** | Responsable de la presentación y coordinación actual | Presentación del producto, coordinación, diseño visual e integración técnica | [@Brando-1510](https://github.com/Brando-1510) |
-
-La base de código es un proyecto colaborativo preexistente disponible en [luis-hdz7/AgroVision](https://github.com/luis-hdz7/AgroVision). Su historial conserva las contribuciones originales. La representación individual actual no implica autoría exclusiva ni que todo el desarrollo corresponda al evento actual.
-
 ---
 
 ## Contacto
