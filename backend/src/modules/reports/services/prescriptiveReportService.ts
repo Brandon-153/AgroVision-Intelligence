@@ -1,0 +1,159 @@
+import { zoneInsightMock } from "../../analysis/data/zoneInsightMock";
+import { ZoneInsight } from "../../analysis/types/zoneInsightTypes";
+import { alertsMock } from "../../alerts/data/alertsMock";
+import { AgriculturalAlert } from "../../alerts/types/alertsTypes";
+import { recommendationsMock } from "../../recommendations/data/recommendationsMock";
+import {
+  Recommendation,
+  RecommendationPriority,
+} from "../../recommendations/types/recommendationTypes";
+import { RiskLevel } from "../../risk/types/riskTypes";
+import { FieldNotebookService } from "../../field-notebook/services/fieldNotebookService";
+import {
+  PrescriptiveActionLog,
+  PrescriptiveAlertSummary,
+  PrescriptiveEvidenceSummary,
+  PrescriptiveFieldReport,
+  PrescriptivePendingAction,
+  PrescriptiveRecommendationSummary,
+} from "../types/prescriptiveReportTypes";
+
+function toRiskLevel(severity: AgriculturalAlert["severity"]): RiskLevel {
+  return severity === "CRITICAL" ? "HIGH" : (severity as RiskLevel);
+}
+
+function adaptEvidence(insight: ZoneInsight): PrescriptiveEvidenceSummary[] {
+  return insight.evidence.map((item, index) => ({
+    id: `ev-${String(index + 1).padStart(3, "0")}`,
+    source: item.source,
+    metric: item.metric,
+    value: item.value ?? null,
+    unit: item.unit ?? null,
+    status: item.status,
+    explanation: item.explanation,
+    capturedAt: insight.generatedAt,
+  }));
+}
+
+function adaptAlerts(alerts: AgriculturalAlert[]): PrescriptiveAlertSummary[] {
+  return alerts.map((alert) => ({
+    id: alert.id,
+    zoneId: alert.zoneId ?? "",
+    severity: toRiskLevel(alert.severity),
+    type: alert.type,
+    title: alert.title,
+    message: alert.message,
+    recommendedAction: alert.recommendedAction,
+    createdAt: alert.createdAt,
+  }));
+}
+
+function adaptRecommendations(
+  recommendations: Recommendation[],
+  evidenceIds: Map<string, string>,
+): PrescriptiveRecommendationSummary[] {
+  return recommendations.map((recommendation) => {
+    const relatedEvidenceIds = recommendation.evidence
+      .map(
+        (item) =>
+          evidenceIds.get(`${item.source}:${item.value}:${item.explanation}`) ??
+          evidenceIds.get(`${item.explanation}`),
+      )
+      .filter((id): id is string => Boolean(id));
+
+    return {
+      id: recommendation.id,
+      zoneId: recommendation.zoneId ?? "",
+      reason: recommendation.reason,
+      suggestedAction: recommendation.suggestedAction,
+      expectedImpact: recommendation.expectedImpact,
+      priority: recommendation.priority as RecommendationPriority,
+      relatedEvidenceIds,
+    };
+  });
+}
+
+function adaptActionsTaken(
+  zoneEntries: ReturnType<typeof FieldNotebookService.getEntriesByZone>,
+): PrescriptiveActionLog[] {
+  return zoneEntries
+    .filter(
+      (entry) => entry.actionTaken && !/pendiente/i.test(entry.actionTaken),
+    )
+    .map((entry) => ({
+      id: entry.id,
+      title: entry.activityType,
+      description: entry.actionTaken,
+      status: "DONE",
+      responsible: entry.responsibleUser,
+      registeredAt: entry.createdAt,
+      evidence: entry.evidence ?? [],
+    }));
+}
+
+function adaptPendingActions(
+  zoneEntries: ReturnType<typeof FieldNotebookService.getEntriesByZone>,
+): PrescriptivePendingAction[] {
+  return zoneEntries
+    .filter((entry) => {
+      const pendingText = `${entry.actionTaken ?? ""} ${entry.description ?? ""}`;
+      return /pendiente|pending/i.test(pendingText);
+    })
+    .map((entry) => ({
+      id: entry.id,
+      title: "Seguimiento pendiente",
+      description: entry.actionTaken || entry.description,
+      status: "PENDING",
+      responsible: entry.responsibleUser,
+      registeredAt: entry.createdAt,
+      dueDate: entry.followUpAt ?? entry.createdAt,
+      priority: "HIGH",
+      evidence: entry.evidence ?? [],
+    }));
+}
+
+export function getPrescriptiveReportByZone(
+  zoneId: string,
+): PrescriptiveFieldReport | null {
+  const insight = zoneInsightMock.find((item) => item.zoneId === zoneId);
+
+  if (!insight) {
+    return null;
+  }
+
+  const alerts = alertsMock.filter((alert) => alert.zoneId === zoneId);
+  const recommendations = recommendationsMock.filter(
+    (recommendation) => recommendation.zoneId === zoneId,
+  );
+  const zoneEntries = FieldNotebookService.getEntriesByZone(zoneId);
+
+  const evidence = adaptEvidence(insight);
+  const evidenceLookup = new Map<string, string>();
+
+  evidence.forEach((item) => {
+    evidenceLookup.set(
+      `${item.source}:${item.value}:${item.explanation}`,
+      item.id,
+    );
+    evidenceLookup.set(item.explanation, item.id);
+  });
+
+  return {
+    reportId: `report-${insight.zoneId}-001`,
+    fieldId: insight.fieldId,
+    zoneId: insight.zoneId,
+    cropType: insight.cropType,
+    healthScore: insight.healthScore,
+    finalRiskLevel: (insight.finalRiskLevel === "CRITICAL"
+      ? "HIGH"
+      : insight.finalRiskLevel) as RiskLevel,
+    mainCause: insight.mainCause,
+    summary: `${insight.mainCause} Las acciones se trazan desde el notebook de campo.`,
+    evidence,
+    activeAlerts: adaptAlerts(alerts),
+    recommendations: adaptRecommendations(recommendations, evidenceLookup),
+    actionsTaken: adaptActionsTaken(zoneEntries),
+    pendingActions: adaptPendingActions(zoneEntries),
+    createdAt: insight.generatedAt,
+  };
+}
